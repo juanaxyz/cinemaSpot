@@ -1,35 +1,44 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import { GetMovieList } from "./api/api";
+import MovieCard from "./components/movie-card";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [MovieData, setMovieData] = useState([]);
+
+  useEffect(() => {
+    GetMovieList().then((res) => {
+      setMovieData(res);
+    });
+  }, []);
+
+  const SearchMovie = (e) => {
+    console.log(e);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="w-full flex flex-wrap flex-col items-center justify-center gap-7">
+      <input
+        className="search-movie border border-black rounded-md py-2 px-5 w-1/2 self-center"
+        type="text"
+        placeholder="Search for a movie..."
+        onChange={(target) => {
+          SearchMovie(target.value);
+        }}
+      />
+
+      {MovieData.map((movie, i) => {
+        return (
+          <MovieCard
+            key={i}
+            title={movie.title}
+            poster={movie.poster_path}
+            date={movie.release_date}
+            rate={movie.vote_average}
+          />
+        );
+      })}
+    </div>
+  );
 }
 
-export default App
+export default App;

@@ -1,2 +1,3 @@
 import star from "./star.svg";
-export default { star };
+import search from "./search.svg";
+export default { star, search };

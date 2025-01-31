@@ -3,9 +3,9 @@ import axios from "axios";
 const baseUrl = import.meta.env.VITE_BASE_URL;
 const apiKey = import.meta.env.VITE_API_KEY;
 
-export const GetMovieList = async () => {
+export const GetMovieList = async (q) => {
   const movieList = await axios.get(
-    `${baseUrl}movie/now_playing?page=1&api_key=${apiKey}`
+    `${baseUrl}movie/${q}?page=1&api_key=${apiKey}`
   );
 
   // console.log(movieList.data.results);

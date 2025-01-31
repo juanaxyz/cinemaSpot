@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { GetMovieList, SearchMovie } from "./api/api";
+import { GetMovieList, SearchMovie, ListPopularMovie } from "./api/api";
 
 import MovieCard from "./components/movie-card";
 import Header from "./components/header";
@@ -7,41 +7,49 @@ import Carousel from "./components/Carousel";
 import Footer from "./components/footer";
 
 function App() {
-  const [MovieData, setMovieData] = useState([]);
+  const [nowPlaying, setNowPlaying] = useState([]);
+  const [topRated, settopRated] = useState([]);
+  const [upcomingMovie, setupcomingMovie] = useState([]);
+  const [popularMovie, setPopularMovie] = useState([]);
 
   useEffect(() => {
-    GetMovieList().then((res) => {
-      setMovieData(res || []);
+    ListPopularMovie().then((res) => {
+      setPopularMovie(res || []);
+    });
+
+    GetMovieList("now_playing").then((res) => {
+      setNowPlaying(res || []);
+    });
+    GetMovieList("top_rated").then((res) => {
+      settopRated(res || []);
+    });
+    GetMovieList("upcoming").then((res) => {
+      setupcomingMovie(res || []);
     });
   }, []);
 
   const QueryMovie = async (q) => {
     if (q.length > 3) {
       const query = await SearchMovie(q);
-      setMovieData(query);
+      console.log(query);
+      // setMovieData(query);
     }
   };
-
-  const dummy = [1, 2, 3, 4, 5];
 
   return (
     <div className="relative w-full bg-black">
       <Header onSearch={QueryMovie} />
-      <div className="flex flex-row gap-4 overflow-y-auto snap-x snap-mandatory no-scrollbar">
-        {dummy.map((item, key) => (
-          <div key={key} className="relative snap-center">
-            <Carousel />
-          </div>
-        ))}
+      <div className="w-full h-[85vh] mx-auto">
+        <Carousel slides={popularMovie} />
       </div>
 
       {/* list movie */}
-      <div className="text-2xl text-white font-bold w-[95vw] mx-auto -mt-40">
+      <div className="text-2xl text-white font-bold w-[95vw] mx-auto ">
         <h1>Now Playing</h1>
       </div>
       <div className="flex flex-row gap-4 overflow-y-auto p-5 no-scrollbar z-10 bg-black ">
-        {Array.isArray(MovieData) &&
-          MovieData.map((movie, i) => {
+        {Array.isArray(nowPlaying) &&
+          nowPlaying.map((movie, i) => {
             return (
               <div key={i} className="relative">
                 <MovieCard
@@ -56,11 +64,11 @@ function App() {
       </div>
 
       <div className="text-2xl text-white font-bold w-[95vw] mx-auto">
-        <h1>Now Playing</h1>
+        <h1>Top Rated</h1>
       </div>
       <div className="flex flex-row gap-4 overflow-y-auto p-5 no-scrollbar">
-        {Array.isArray(MovieData) &&
-          MovieData.map((movie, i) => {
+        {Array.isArray(topRated) &&
+          topRated.map((movie, i) => {
             return (
               <div key={i} className="relative">
                 <MovieCard
@@ -75,11 +83,11 @@ function App() {
       </div>
 
       <div className="text-2xl text-white font-bold w-[95vw] mx-auto">
-        <h1>Now Playing</h1>
+        <h1>Upcoming</h1>
       </div>
       <div className="flex flex-row gap-4 overflow-y-auto p-5 no-scrollbar">
-        {Array.isArray(MovieData) &&
-          MovieData.map((movie, i) => {
+        {Array.isArray(upcomingMovie) &&
+          upcomingMovie.map((movie, i) => {
             return (
               <div key={i} className="relative">
                 <MovieCard

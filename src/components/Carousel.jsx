@@ -1,37 +1,38 @@
-import { ListPopularMovie } from "../api/api";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { useState } from "react";
 
-const Carousel = () => {
-  const [HeroMovie, setHeroMovie] = useState([]);
+/* eslint-disable react/prop-types */
+const baseImgUrl = import.meta.env.VITE_BASE_IMG_ORI;
+
+const Carousel = ({ slides }) => {
+  const [current, setCurrent] = useState(0);
+
+  const next = () => {
+    setCurrent((current) => (current === slides.length - 1 ? 0 : current + 1));
+  };
+
   useEffect(() => {
-    ListPopularMovie().then((res) => {
-      setHeroMovie(res);
-    });
-  }, []);
-  return (
-    <div className="relative flex justify-between items-center px-10 w-screen ">
-      <div className="text-white text-3xl font-bold w-1/2">
-        Contoh Judul
-        <div className="text-white text-lg font-normal ">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet sed quia
-          eligendi illo, minima iusto quos! Sunt possimus voluptate quisquam
-          veritatis, quis ad eligendi minus!
-        </div>
-      </div>
+    const slideInterval = setInterval(next, 5000);
+    return () => clearInterval(slideInterval);
+  });
 
-      <div className="w-1/2 flex justify-center">
-        <div className="relative  rounded-lg">
-          <div className="relative ">
-            <img
-              src="https://image.tmdb.org/t/p/w500/5T9WR7vIOnHm6xhVt5zBuPbBgt1.jpg"
-              alt=""
-              className="w-full h-full rounded-lg "
-            />
-            {/* Overlay untuk efek shadow */}
-            <div className="absolute inset-0 shadow-[inset_0_0_50px_50px_rgba(0,0,0,1)]" />
-            <div className="absolute inset-0 shadow-[inset_0_0_50px_50px_rgba(0,0,0,1)]" />
-          </div>
-        </div>
+  return (
+    <div className="overflow-hidden relative border h-full w-full">
+      <div
+        className="flex w-full h-full transition-transform ease-out duration-500"
+        style={{ transform: `translateX(-${current * 100}%)` }}
+      >
+        {slides.map((item, i) => {
+          return (
+            <div className="flex-shrink-0 w-full h-full" key={i}>
+              <img
+                src={`${baseImgUrl}${item.backdrop_path}`}
+                className="object-cover w-full h-full"
+                alt={`Slide ${i}`}
+              />
+            </div>
+          );
+        })}
       </div>
     </div>
   );

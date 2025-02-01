@@ -12,7 +12,7 @@ const Carousel = ({ slides }) => {
   };
 
   useEffect(() => {
-    const slideInterval = setInterval(next, 5000);
+    const slideInterval = setInterval(next, 7000);
     return () => clearInterval(slideInterval);
   });
 
@@ -24,12 +24,23 @@ const Carousel = ({ slides }) => {
       >
         {slides.map((item, i) => {
           return (
-            <div className="flex-shrink-0 w-full h-full" key={i}>
+            <div
+              className="flex-shrink-0 w-full h-full relative bg-black/50"
+              key={i}
+            >
               <img
                 src={`${baseImgUrl}${item.backdrop_path}`}
                 className="object-cover w-full h-full"
                 alt={`Slide ${i}`}
               />
+
+              <div className="absolute inset-0  md:w-[60%] p-5 flex flex-col justify-end my-10 z-50">
+                <p className="text-white text-3xl font-bold mb-2">
+                  {item.title}
+                </p>
+                <p className="text-white">{item.overview}</p>
+              </div>
+              <div className="absolute inset-0 w-full  bg-gradient-to-t from-5% from-black to-60% to-transparent "></div>
             </div>
           );
         })}

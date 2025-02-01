@@ -35,7 +35,6 @@ function App() {
       // setMovieData(query);
     }
   };
-
   return (
     <div className="relative w-full bg-black">
       <Header onSearch={QueryMovie} />

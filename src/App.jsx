@@ -1,105 +1,59 @@
 import { useEffect, useState } from "react";
-import { GetMovieList, SearchMovie, ListPopularMovie } from "./api/api";
+import { GetMovieList } from "./api/api";
 
-import MovieCard from "./components/movie-card";
+// import MovieCard from "./components/movie-card";
 import Header from "./components/header";
 import Carousel from "./components/Carousel";
 import Footer from "./components/footer";
+import { MovieList } from "./components/MovieList";
 
 function App() {
-  const [nowPlaying, setNowPlaying] = useState([]);
-  const [topRated, settopRated] = useState([]);
-  const [upcomingMovie, setupcomingMovie] = useState([]);
-  const [popularMovie, setPopularMovie] = useState([]);
+  const [movies, SetMovies] = useState({
+    nowPlaying: [],
+    topRated: [],
+    upcoming: [],
+    popular: [],
+  });
 
   useEffect(() => {
-    ListPopularMovie().then((res) => {
-      setPopularMovie(res || []);
-    });
+    const fetchMovies = async () => {
+      try {
+        const [popular, nowPlaying, top_rated, upcoming] = await Promise.all([
+          GetMovieList("popular"),
+          GetMovieList("now_playing"),
+          GetMovieList("top_rated"),
+          GetMovieList("upcoming"),
+        ]);
 
-    GetMovieList("now_playing").then((res) => {
-      setNowPlaying(res || []);
-    });
-    GetMovieList("top_rated").then((res) => {
-      settopRated(res || []);
-    });
-    GetMovieList("upcoming").then((res) => {
-      setupcomingMovie(res || []);
-    });
+        SetMovies({
+          popular: popular,
+          nowPlaying: nowPlaying,
+          topRated: top_rated,
+          upcoming: upcoming,
+        });
+      } catch (error) {
+        console.log({ error: error });
+      }
+    };
+    fetchMovies();
   }, []);
 
-  const QueryMovie = async (q) => {
-    if (q.length > 3) {
-      const query = await SearchMovie(q);
-      console.log(query);
-      // setMovieData(query);
-    }
-  };
+  // console.log(movies);
   return (
     <div className="relative w-full bg-black">
-      <Header onSearch={QueryMovie} />
+      <Header />
       <div className="w-full h-[85vh] mx-auto">
-        <Carousel slides={popularMovie} />
+        <Carousel slides={movies.popular} />
       </div>
 
       {/* list movie */}
-      <div className="text-2xl text-white font-bold w-[95vw] mx-auto ">
-        <h1>Now Playing</h1>
+      <MovieList movies={movies.nowPlaying} category="Now Playing" />
+      <MovieList movies={movies.upcoming.slice(0, 8)} category="Upcoming" />
+      <div className="  flex justify-center my-10 ">
+        <button className="bg-amber-100 px-5 py-2 cursor-pointer rounded-sm">
+          View More
+        </button>
       </div>
-      <div className="flex flex-row gap-4 overflow-y-auto p-5 no-scrollbar z-10 bg-black ">
-        {Array.isArray(nowPlaying) &&
-          nowPlaying.map((movie, i) => {
-            return (
-              <div key={i} className="relative">
-                <MovieCard
-                  title={movie.title}
-                  poster={movie.poster_path}
-                  date={movie.release_date}
-                  rate={movie.vote_average}
-                />
-              </div>
-            );
-          })}
-      </div>
-
-      <div className="text-2xl text-white font-bold w-[95vw] mx-auto">
-        <h1>Top Rated</h1>
-      </div>
-      <div className="flex flex-row gap-4 overflow-y-auto p-5 no-scrollbar">
-        {Array.isArray(topRated) &&
-          topRated.map((movie, i) => {
-            return (
-              <div key={i} className="relative">
-                <MovieCard
-                  title={movie.title}
-                  poster={movie.poster_path}
-                  date={movie.release_date}
-                  rate={movie.vote_average}
-                />
-              </div>
-            );
-          })}
-      </div>
-
-      <div className="text-2xl text-white font-bold w-[95vw] mx-auto">
-        <h1>Upcoming</h1>
-      </div>
-      <div className="flex flex-row gap-4 overflow-y-auto p-5 no-scrollbar">
-        {Array.isArray(upcomingMovie) &&
-          upcomingMovie.map((movie, i) => {
-            return (
-              <div key={i} className="relative">
-                <MovieCard
-                  title={movie.title}
-                  poster={movie.poster_path}
-                  date={movie.release_date}
-                  rate={movie.vote_average}
-                />
-              </div>
-            );
-          })}
-      </div>
-
       <Footer />
     </div>
   );

@@ -1,8 +1,10 @@
 import icons from "../assets/icons/icon";
 import { useState } from "react";
 import { SearchMovie } from "../api/api";
+import { useNavigate } from "react-router-dom";
 
 export const Search = () => {
+  let navigate = useNavigate();
   const [search, setSearch] = useState([]);
 
   const handleSearch = async (value) => {
@@ -20,6 +22,11 @@ export const Search = () => {
       setSearch([]);
     }
   };
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      navigate("/Movie");
+    }
+  };
 
   return (
     <div className="relative w-1/2 md:w-1/4 h-fit text-white">
@@ -35,12 +42,18 @@ export const Search = () => {
         onChange={({ target }) => {
           handleSearch(target.value);
         }}
+        onKeyDown={handleKeyDown}
       />
-      {search.length > 0 && (
-        <div className="absolute w-full p-2 my-2 text-black border rounded-sm bg-amber-100">
-          {search[0]}
-        </div>
-      )}
+      <div className="absolute w-full  ">
+        {search.length > 0 &&
+          search.slice(0, 5).map((item, i) => {
+            return (
+              <div className="w-full p-2 my-1 rounded-sm bg-amber-100" key={i}>
+                <div className="text-black">{item}</div>
+              </div>
+            );
+          })}
+      </div>
     </div>
   );
 };

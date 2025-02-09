@@ -12,17 +12,19 @@ export const GetMovieList = async (q) => {
   return movieList.data.results;
 };
 
-export const ListPopularMovie = async () => {
-  const PopularMovie = await axios.get(
-    `${baseUrl}movie/popular?page=1&api_key=${apiKey}`
-  );
 
-  return PopularMovie.data.results;
-};
 
 export const SearchMovie = async (q) => {
   const search = await axios.get(
     `${baseUrl}search/movie?query=${q}&page=1&api_key=${apiKey}`
   );
   return search.data.results;
+};
+
+export const DetailMovie = async (id) => {
+  const DetailMovie = await axios.get(
+    `${baseUrl}movie/${id}?api_key=${apiKey}`
+  );
+
+  return DetailMovie.data;
 };

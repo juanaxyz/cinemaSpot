@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import icon from "../assets/icons/icon";
+import NotFoundIMG from "../assets/images/not-found.png";
 
 const MovieCard = ({ title, poster, date, rate }) => {
   const baseImgUrl = import.meta.env.VITE_BASE_IMG;
@@ -8,11 +9,20 @@ const MovieCard = ({ title, poster, date, rate }) => {
     <div className="group relative overflow-hidden rounded-lg  shadow-lg transition-all duration-300 hover:shadow-xl w-40">
       {/* Image Container with Overlay */}
       <div className="relative aspect-[2/3] overflow-hidden">
-        <img
-          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
-          src={`${baseImgUrl}${poster}`}
-          alt={title}
-        />
+        {poster == null ? (
+          <img
+            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+            src={NotFoundIMG}
+            alt={title}
+          />
+        ) : (
+          <img
+            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+            src={`${baseImgUrl}${poster}`}
+            alt={title}
+          />
+        )}
+
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
       </div>
 
@@ -38,7 +48,7 @@ const MovieCard = ({ title, poster, date, rate }) => {
 
 MovieCard.propTypes = {
   title: PropTypes.string.isRequired,
-  poster: PropTypes.string.isRequired,
+  poster: PropTypes.string,
   date: PropTypes.string.isRequired,
   rate: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
 };

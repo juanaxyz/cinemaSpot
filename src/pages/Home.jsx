@@ -53,7 +53,7 @@ function Home() {
       <div className="  flex justify-center my-10 ">
         <Link
           className="bg-amber-100 px-5 py-2 cursor-pointer rounded-sm"
-          to={"/Movie"}
+          to={"/Movie/search/default"}
         >
           View More
         </Link>

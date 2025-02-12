@@ -3,6 +3,7 @@ import { MovieList } from "../components/MovieList";
 import { GetMovieList, SearchMovie } from "../api/api";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import Footer from "../components/footer";
 
 const Movie = () => {
   const [MovieData, setMovieList] = useState([]);
@@ -34,6 +35,7 @@ const Movie = () => {
       <div>
         <MovieList category="" movies={MovieData} />
       </div>
+      <Footer />
     </div>
   );
 };

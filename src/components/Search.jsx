@@ -1,27 +1,19 @@
 import icons from "../assets/icons/icon";
-import { useState } from "react";
 import { SearchMovie } from "../api/api";
-import { useNavigate, NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // eslint-disable-next-line react/prop-types
 export const Search = ({ handleSearchQuery }) => {
   let navigate = useNavigate();
-  const [querySearch, setquerySearch] = useState([]);
 
   const handleSearch = async (value) => {
     if (value.length > 3) {
       try {
         const response = await SearchMovie(value);
         handleSearchQuery(response);
-        if (Array.isArray(response)) {
-          const title = response.map((item) => item);
-          setquerySearch(title);
-        }
       } catch (e) {
         console.log("error:", e);
       }
-    } else {
-      setquerySearch([]);
     }
   };
   const handleKeyDown = (e) => {
@@ -48,21 +40,6 @@ export const Search = ({ handleSearchQuery }) => {
         onChange={({ target }) => handleSearch(target.value)}
         onKeyDown={handleKeyDown}
       />
-
-      {/* Search Suggestions Dropdown */}
-      {querySearch?.length > 0 && (
-        <div className="absolute w-full bg-white shadow-lg rounded-md mt-1">
-          {querySearch.slice(0, 5).map((item) => (
-            <NavLink
-              className="block p-2 my-1 rounded-sm bg-amber-100 text-black hover:bg-amber-200 transition"
-              key={item.id} // Use item.id instead of index for better uniqueness
-              to={`/Movie/detail/${item.id}`}
-            >
-              {item.title}
-            </NavLink>
-          ))}
-        </div>
-      )}
     </div>
   );
 };

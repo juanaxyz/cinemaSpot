@@ -49,7 +49,7 @@ function Home() {
 
       {/* list movie */}
       <MovieList movies={movies.nowPlaying} category="Now Playing" />
-      <MovieList movies={movies.upcoming.slice(0, 8)} category="Upcoming" />
+      <MovieList movies={movies.upcoming.slice(0, 10)} category="Upcoming" />
       <div className="  flex justify-center my-10 ">
         <Link
           className="bg-amber-100 px-5 py-2 cursor-pointer rounded-sm"

@@ -6,7 +6,7 @@ const MovieCard = ({ title, poster, date, rate }) => {
   const baseImgUrl = import.meta.env.VITE_BASE_IMG;
 
   return (
-    <div className="group relative overflow-hidden rounded-lg  shadow-lg transition-all duration-300 hover:shadow-xl w-40">
+    <div className="group relative overflow-hidden rounded-lg  shadow-lg transition-all duration-300 hover:shadow-xl w-36">
       {/* Image Container with Overlay */}
       <div className="relative aspect-[2/3] overflow-hidden">
         {poster == null ? (

@@ -8,11 +8,11 @@ import Footer from "../components/footer";
 const Movie = () => {
   const [MovieData, setMovieList] = useState([]);
   const { query } = useParams();
-  console.log(query);
+
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        if (query == "default") {
+        if (query === "default") {
           setMovieList(await GetMovieList("upcoming"));
         } else {
           setMovieList(await SearchMovie(query));

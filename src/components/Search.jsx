@@ -36,7 +36,7 @@ export const Search = ({ handleSearchQuery }) => {
         className="search-movie outline-2 outline-white focus:outline-sky-400 
       rounded-md p-2 pl-10 w-full text-white transition-all bg-transparent"
         type="text"
-        placeholder="Search for a movie..."
+        placeholder="Search movie..."
         onChange={({ target }) => handleSearch(target.value)}
         onKeyDown={handleKeyDown}
       />

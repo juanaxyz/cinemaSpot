@@ -17,6 +17,7 @@ const DetailMovieComponent = () => {
   });
 
   useEffect(() => {
+    setDetail({ detailMovies: [], recommendationsMovie: [] });
     const fetchDetail = async () => {
       try {
         const [detail, recommendations] = await Promise.all([

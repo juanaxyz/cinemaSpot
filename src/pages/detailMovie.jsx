@@ -6,6 +6,7 @@ import { useState } from "react";
 import { MovieList } from "../components/MovieList";
 import Footer from "../components/footer";
 import NotFoundIMG from "../assets/images/not-found.png";
+import Header from "../components/header";
 
 const DetailMovieComponent = () => {
   const baseImgUrl = import.meta.env.VITE_BASE_IMG;
@@ -38,6 +39,7 @@ const DetailMovieComponent = () => {
 
   return (
     <div className="bg-black relative text-white">
+      <Header />
       {/* Background Image */}
       {detail.detailMovies.backdrop_path == null ? (
         <img

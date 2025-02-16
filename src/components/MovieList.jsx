@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { Link } from "react-router-dom";
 import Loader from "../utils/Loader";
 import React from "react";
+
 const MovieCard = React.lazy(() => import("./movie-card"));
 
 export const MovieList = ({ movies, category }) => {

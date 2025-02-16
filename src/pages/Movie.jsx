@@ -33,7 +33,10 @@ const Movie = () => {
       <Header handleSearchQuery={handleSearchQuery} />
 
       <div>
-        <MovieList category="" movies={MovieData} />
+        <MovieList
+          category={query === "default" ? "" : `Search Result For : ${query}`}
+          movies={MovieData}
+        />
       </div>
       <Footer />
     </div>

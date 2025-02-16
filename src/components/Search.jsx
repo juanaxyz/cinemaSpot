@@ -37,7 +37,7 @@ export const Search = ({ handleSearchQuery }) => {
       rounded-md p-2 pl-10 w-full text-white transition-all bg-transparent"
         type="text"
         placeholder="Search movie..."
-        onChange={({ target }) => handleSearch(target.value)}
+        onSubmit={({ target }) => handleSearch(target.value)}
         onKeyDown={handleKeyDown}
       />
     </div>

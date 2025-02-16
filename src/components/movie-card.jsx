@@ -1,6 +1,10 @@
 import PropTypes from "prop-types";
 import icon from "../assets/icons/icon";
 import NotFoundIMG from "../assets/images/not-found.png";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
+
+
 
 const MovieCard = ({ title, poster, date, rate }) => {
   const baseImgUrl = import.meta.env.VITE_BASE_IMG;
@@ -16,10 +20,11 @@ const MovieCard = ({ title, poster, date, rate }) => {
             alt={title}
           />
         ) : (
-          <img
+          <LazyLoadImage
             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
             src={`${baseImgUrl}${poster}`}
             alt={title}
+            effect="blur"
           />
         )}
 

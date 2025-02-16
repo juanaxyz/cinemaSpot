@@ -4,9 +4,12 @@ import { DetailMovie } from "../api/api";
 import { useEffect } from "react";
 import { useState } from "react";
 import { MovieList } from "../components/MovieList";
+import notFoundIMG from "../assets/images/not-found.png";
 import Footer from "../components/footer";
-import NotFoundIMG from "../assets/images/not-found.png";
 import Header from "../components/header";
+
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 
 const DetailMovieComponent = () => {
   const baseImgUrl = import.meta.env.VITE_BASE_IMG;
@@ -37,41 +40,38 @@ const DetailMovieComponent = () => {
     fetchDetail();
   }, [id]);
 
+  const backdropImage = `${baseImgUrlHD}${
+    detail.detailMovies?.backdrop_path || detail.detailMovies?.poster_path
+  } `;
+
+  const posterImage = detail.detailMovies.poster_path
+    ? `${baseImgUrl}${detail.detailMovies.poster_path}`
+    : notFoundIMG;
   return (
     <div className="bg-black relative text-white">
       <Header />
       {/* Background Image */}
-      {detail.detailMovies.backdrop_path == null ? (
-        <img
-          src={NotFoundIMG}
-          className="absolute top-0 left-0 w-full h-full opacity-50 object-cover"
+      <div className="absolute top-0 left-0 opacity-30">
+        <LazyLoadImage
+          src={backdropImage}
           alt="Movie Background"
+          effect="blur"
+          height={window.screen.height}
+          width={window.screen.width}
+          className="w-full h-full"
         />
-      ) : (
-        <img
-          src={`${baseImgUrlHD}${detail.detailMovies?.backdrop_path} `}
-          className="absolute top-0 left-0 w-full h-full opacity-50 object-cover"
-          alt="Movie Background"
-        />
-      )}
+      </div>
 
       {/* Content Container */}
       <div className="relative flex flex-col md:flex-row p-5 gap-5">
         {/* Movie Poster */}
         <div className="md:w-1/3">
-          {detail.detailMovies.poster_path == null ? (
-            <img
-              src={NotFoundIMG}
-              alt={detail.detailMovies?.title || "Movie Poster"}
-              className="w-full h-auto rounded-lg shadow-lg"
-            />
-          ) : (
-            <img
-              src={`${baseImgUrl}${detail.detailMovies?.poster_path}`}
-              alt={detail.detailMovies?.title || "Movie Poster"}
-              className="w-full h-auto rounded-lg shadow-lg"
-            />
-          )}
+          <LazyLoadImage
+            src={posterImage}
+            alt={detail.detailMovies?.title || "Movie Poster"}
+            className="relative rounded-lg shadow-lg"
+            effect="blur"
+          />
         </div>
 
         {/* Movie Details */}

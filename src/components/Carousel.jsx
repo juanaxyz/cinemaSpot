@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useState } from "react";
-
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 /* eslint-disable react/prop-types */
 const baseImgUrl = import.meta.env.VITE_BASE_IMG_ORI;
 
@@ -28,10 +29,11 @@ const Carousel = ({ slides }) => {
               className="flex-shrink-0 w-full h-full relative bg-black/50"
               key={i}
             >
-              <img
+              <LazyLoadImage
                 src={`${baseImgUrl}${item.backdrop_path}`}
                 className="object-cover w-full h-full"
                 alt={`Slide ${i}`}
+                effect="blur"
               />
 
               <div className="absolute inset-0  md:w-[60%] p-5 flex flex-col justify-end my-10 z-50">
